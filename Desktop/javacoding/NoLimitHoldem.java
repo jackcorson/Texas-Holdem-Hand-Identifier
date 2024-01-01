@@ -352,13 +352,14 @@ class EvalHand {
                 count++;
                 net += removeDup.get(i).getRank().getValue(); //See straighteval fn for net explanation
                 suit = removeDup.get(i).getSuit().getValue(); //Determine current suit
-
-                if (straightFlushHighCard.size() == 0) {
-                    straightFlushHighCard.add(removeDup.get(i + 1));
-                }
-                else {
-                    straightFlushHighCard.remove(0);
-                    straightFlushHighCard.add(removeDup.get(i + 1));
+                if (count >= 4) {
+                    if (straightFlushHighCard.size() == 0) {
+                        straightFlushHighCard.add(removeDup.get(i + 1));
+                    }
+                    else {
+                        straightFlushHighCard.remove(0);
+                        straightFlushHighCard.add(removeDup.get(i + 1));
+                    }
                 }
             }
             //If there is a straight with all the same suit values, there is a straight flush
@@ -367,14 +368,10 @@ class EvalHand {
                 count++;
             }
             else {
-                if (count < 4) {
-                    count = 0;
-                }
+                count = 0;
             }
         }
-        if (count >= 4) {
-            straight = true;
-        }
+
         return straight;
     }
 
@@ -545,12 +542,15 @@ class EvalHand {
                 If net is equal to 9 (counting 2, 3, and 4) then there is possibility of wheel straight.
                 */
                 net += removeDup.get(i).getRank().getValue();
-                if (straightHighCard.size() == 0) {
-                    straightHighCard.add(removeDup.get(i + 1));
-                }
-                else {
-                    straightHighCard.remove(0);
-                    straightHighCard.add(removeDup.get(i + 1));
+                if (count >= 4) { 
+                    straight = true;
+                    if (straightHighCard.size() == 0) {
+                        straightHighCard.add(removeDup.get(i + 1));
+                    }
+                    else {
+                        straightHighCard.remove(0);
+                        straightHighCard.add(removeDup.get(i + 1));
+                    }
                 }
             }
             //If net is 9 and the last card (highest value card) is an ace (value == 14), then there is a wheel straight.
@@ -558,15 +558,10 @@ class EvalHand {
                 count++;
             }
             else {
-                if (count < 4) {
-                    count = 0;
-                }
+                count = 0;
             }
         }
 
-        if (count >= 4) {
-            straight = true;
-        }
         return straight;
     }
 
